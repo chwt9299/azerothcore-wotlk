@@ -119,6 +119,12 @@ variables_map GetConsoleArguments(int argc, char** argv, fs::path& configFile, [
 /// Launch the Azeroth server
 int main(int argc, char** argv)
 {
+#if AC_PLATFORM == AC_PLATFORM_WINDOWS
+    // Set console code pages to UTF-8 as early as possible, before any log output.
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
+#endif
+
     Acore::Impl::CurrentServerProcessHolder::_type = SERVER_PROCESS_WORLDSERVER;
     signal(SIGABRT, &Acore::AbortHandler);
 

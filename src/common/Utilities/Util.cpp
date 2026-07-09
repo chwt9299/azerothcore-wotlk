@@ -508,25 +508,9 @@ void utf8printf(FILE* out, const char* str, ...)
 
 void vutf8printf(FILE* out, const char* str, va_list* ap)
 {
-#if AC_PLATFORM == AC_PLATFORM_WINDOWS
-    char temp_buf[32 * 1024];
-    wchar_t wtemp_buf[32 * 1024];
-
-    std::size_t temp_len = vsnprintf(temp_buf, 32 * 1024, str, *ap);
-    //vsnprintf returns -1 if the buffer is too small
-    if (temp_len == std::size_t(-1))
-    {
-        temp_len = 32 * 1024 - 1;
-    }
-
-    std::size_t wtemp_len = 32 * 1024 - 1;
-    Utf8toWStr(temp_buf, temp_len, wtemp_buf, wtemp_len);
-
-    CharToOemBuffW(&wtemp_buf[0], &temp_buf[0], uint32(wtemp_len + 1));
-    fprintf(out, "%s", temp_buf);
-#else
+    // Output UTF-8 directly. On Windows the console output code page is set
+    // to CP_UTF8 early in main(), so no OEM conversion is needed.
     vfprintf(out, str, *ap);
-#endif
 }
 
 bool Utf8ToUpperOnlyLatin(std::string& utf8String)
