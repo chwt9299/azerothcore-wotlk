@@ -111,6 +111,10 @@ inline bool isExtendedLatinCharacter(wchar_t wchar)
     {
         return true;
     }
+    if (wchar == 0x00B7)                                     // MIDDLE DOT (·) — 间隔号，允许用于角色名
+    {
+        return true;
+    }
     if (wchar >= 0x00C0 && wchar <= 0x00D6)                  // LATIN CAPITAL LETTER A WITH GRAVE - LATIN CAPITAL LETTER O WITH DIAERESIS
     {
         return true;
@@ -157,6 +161,10 @@ inline bool isCyrillicCharacter(wchar_t wchar)
 
 inline bool isEastAsianCharacter(wchar_t wchar)
 {
+    if (wchar == 0x00B7)                                     // MIDDLE DOT (·) — 中文名间隔号，允许用于角色名
+    {
+        return true;
+    }
     if (wchar >= 0x1100 && wchar <= 0x11F9)                  // Hangul Jamo
     {
         return true;
